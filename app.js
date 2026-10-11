@@ -1,3 +1,5 @@
+let currentPreviewUrl = "";
+
 document.addEventListener("DOMContentLoaded", async () => {
     applyConfig();
     await initApp();
@@ -114,21 +116,33 @@ async function initApp() {
         return;
     }
 
-    // בחירת שיר אקראי מתוך המערך
+    // הגרלת שיר אקראי
     const randomIndex = Math.floor(Math.random() * songs.length);
     const song = songs[randomIndex];
 
-    let previewUrl = `https://drive.google.com/file/d/${song.fileId}/preview`;
+    currentPreviewUrl = `https://drive.google.com/file/d/${song.fileId}/preview`;
     if (song.resourceKey) {
-        previewUrl += `?resourcekey=${song.resourceKey}`;
+        currentPreviewUrl += `?resourcekey=${song.resourceKey}`;
     }
 
     container.innerHTML = `
         <div class="iframe-container">
-            <iframe src="${previewUrl}" allow="autoplay" loading="lazy"></iframe>
+            <iframe id="drive-iframe" src="${currentPreviewUrl}" allow="autoplay" loading="lazy"></iframe>
         </div>
-        <a href="https://drive.google.com/file/d/${song.fileId}/view${song.resourceKey ? '?resourcekey=' + song.resourceKey : ''}" target="_blank" rel="noopener noreferrer" class="backup-link">
-            פתיחת השיר ב־Google Drive
-        </a>
+        <div class="controls-container">
+            <button class="btn-control btn-stop" onclick="stopAudio()">עצור / השהה אודיו ⏹️</button>
+            <button class="btn-control" onclick="initApp()">שיר אקראי נוסף 🎲</button>
+        </div>
     `;
+}
+
+function stopAudio() {
+    const iframe = document.getElementById("drive-iframe");
+    if (iframe) {
+        // רענון ה-iframe כדי לעצור מיידית את האודיו המתנגן
+        iframe.src = "about:blank";
+        setTimeout(() => {
+            iframe.src = currentPreviewUrl;
+        }, 100);
+    }
 }
