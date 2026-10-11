@@ -54,7 +54,7 @@ function parseTracklist(rawText) {
     const lines = rawText.split(/\r?\n/);
     const songs = new Map();
     const errors = [];
-    const seenIds = new Set();
+    const seenNames = new Set();
 
     lines.forEach((line, index) => {
         const lineNum = index + 1;
@@ -78,13 +78,14 @@ function parseTracklist(rawText) {
 
         const { fileId, resourceKey } = fileIdData;
 
-        if (seenIds.has(fileId)) {
-            errors.push(`שורה ${lineNum}: מזהה קובץ כפול (${fileId})`);
+        if (seenNames.has(title)) {
+            errors.push(`שורה ${lineNum}: שם שיר כפול (${title})`);
             return;
         }
 
-        seenIds.add(fileId);
-        songs.set(fileId, { title, fileId, resourceKey });
+        seenNames.add(title);
+        // נשמור את המפתח במפה לפי שם השיר (עבור חיפוש מהיר מהכתובת)
+        songs.set(title, { title, fileId, resourceKey });
     });
 
     return { songs, errors };
@@ -117,23 +118,23 @@ async function initApp() {
     const { songs, errors } = await loadTracklist();
 
     const params = new URLSearchParams(window.location.search);
-    const songId = params.get("song");
+    const songName = params.get("song");
 
-    if (!songId) {
+    if (!songName) {
         container.innerHTML = `<div class="message-box">סרקו קוד QR מתוך המשחק כדי להתחיל להאזין לשיר.</div>`;
         return;
     }
 
-    if (!songs.has(songId)) {
+    if (!songs.has(songName)) {
         let errorDetails = "";
         if (errors.length > 0) {
             errorDetails = `<br><small style="opacity:0.7">אזהרות ברשימה: ${errors.join(", ")}</small>`;
         }
-        container.innerHTML = `<div class="message-box">שיר זה אינו קיים במערכת או שהמזהה שגוי.${errorDetails}</div>`;
+        container.innerHTML = `<div class="message-box">שיר זה אינו קיים במערכת או שהשם שגוי.${errorDetails}</div>`;
         return;
     }
 
-    const song = songs.get(songId);
+    const song = songs.get(songName);
     let previewUrl = `https://drive.google.com/file/d/${song.fileId}/preview`;
     if (song.resourceKey) {
         previewUrl += `?resourcekey=${song.resourceKey}`;
