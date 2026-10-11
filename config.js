@@ -1,5 +1,5 @@
-משחק זיהוי שיריwindow.GAME_CONFIG = {
-    gameTitle: "משחק זיהוי שירים",
+window.GAME_CONFIG = {
+    gameTitle: "the freestyle game",
     subtitle: "סרקו את קוד ה־QR והקשיבו לשיר בנגן",
     promptText: "הקשיבו היטב לשיר בנגן ולחצו על Play:",
     fallbackBgColor: "#1a1a2e",
@@ -9,5 +9,5 @@
     overlayOpacity: 0.65,
     logoWidth: "120px",
     logoPath: "images/logo.jpg",
-    bgPath: "images/backgroung.jpg"
-};ם
+    bgPath: "images/game_background.jpg"
+};
