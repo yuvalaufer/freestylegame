@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק מוזיקלי</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="background-container" class="background-container"></div>
+    <div class="background-overlay"></div>
+
+    <header>
+        <img id="logo-img" class="logo" alt="לוגו המשחק">
+        <h1 id="game-title">משחק מוזיקלי</h1>
+        <div id="game-subtitle" class="subtitle"></div>
+    </header>
+
+    <main>
+        <div class="player-box">
+            <div id="prompt-text" class="prompt-text">הקשיבו היטב לשיר בנגן:</div>
+            <div id="player-content">
+                <div class="message-box">טוען נתונים...</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

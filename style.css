@@ -1,0 +1,143 @@
+:root {
+    --bg-color: #1a1a2e;
+    --text-color: #ffffff;
+    --accent-color: #e94560;
+    --player-box-bg: rgba(255, 255, 255, 0.08);
+    --overlay-opacity: 0.65;
+    --logo-width: 120px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    direction: rtl;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: #000;
+    opacity: var(--overlay-opacity);
+    transition: opacity 0.3s ease;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.logo {
+    width: var(--logo-width);
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.logo.hidden {
+    display: none;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+main {
+    width: 100%;
+    max-width: 600px;
+}
+
+.player-box {
+    background-color: var(--player-box-bg);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    text-align: center;
+}
+
+.prompt-text {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.iframe-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.backup-link {
+    display: inline-block;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    transition: opacity 0.2s;
+}
+
+.backup-link:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.message-box {
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
