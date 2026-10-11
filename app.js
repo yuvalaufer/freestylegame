@@ -42,7 +42,9 @@ function applyConfig() {
 
 async function loadTracklist() {
     try {
-        const response = await fetch("tracklist.txt", { cache: "no-store" });
+        // הוספת מזהה ייחודי בזמן אמת כדי למנוע שמירה במטמון (Cache-busting)
+        const cacheBuster = `?v=${Date.now()}`;
+        const response = await fetch("tracklist.txt" + cacheBuster, { cache: "no-store" });
         if (!response.ok) throw new Error("לא ניתן לטעון את קובץ הרשימה");
         const text = await response.text();
         return parseTracklist(text);
@@ -116,7 +118,7 @@ async function initApp() {
         return;
     }
 
-    // הגרלת שיר אקראי
+    // הגרלה אקראית אמיתית
     const randomIndex = Math.floor(Math.random() * songs.length);
     const song = songs[randomIndex];
 
@@ -139,7 +141,6 @@ async function initApp() {
 function stopAudio() {
     const iframe = document.getElementById("drive-iframe");
     if (iframe) {
-        // רענון ה-iframe כדי לעצור מיידית את האודיו המתנגן
         iframe.src = "about:blank";
         setTimeout(() => {
             iframe.src = currentPreviewUrl;
