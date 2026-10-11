@@ -46,15 +46,14 @@ async function loadTracklist() {
         return parseTracklist(text);
     } catch (err) {
         console.error(err);
-        return { songs: new Map(), errors: ["שגיאה בטעינת קובץ tracklist.txt"] };
+        return { songs: [], errors: ["שגיאה בטעינת קובץ tracklist.txt"] };
     }
 }
 
 function parseTracklist(rawText) {
     const lines = rawText.split(/\r?\n/);
-    const songs = new Map();
+    const songs = [];
     const errors = [];
-    const seenNames = new Set();
 
     lines.forEach((line, index) => {
         const lineNum = index + 1;
@@ -77,15 +76,7 @@ function parseTracklist(rawText) {
         }
 
         const { fileId, resourceKey } = fileIdData;
-
-        if (seenNames.has(title)) {
-            errors.push(`שורה ${lineNum}: שם שיר כפול (${title})`);
-            return;
-        }
-
-        seenNames.add(title);
-        // נשמור את המפתח במפה לפי שם השיר (עבור חיפוש מהיר מהכתובת)
-        songs.set(title, { title, fileId, resourceKey });
+        songs.push({ title, fileId, resourceKey });
     });
 
     return { songs, errors };
@@ -117,24 +108,16 @@ async function initApp() {
     const container = document.getElementById("player-content");
     const { songs, errors } = await loadTracklist();
 
-    const params = new URLSearchParams(window.location.search);
-    const songName = params.get("song");
-
-    if (!songName) {
-        container.innerHTML = `<div class="message-box">סרקו קוד QR מתוך המשחק כדי להתחיל להאזין לשיר.</div>`;
+    if (songs.length === 0) {
+        let errorDetails = errors.length > 0 ? `<br><small style="opacity:0.7">${errors.join(", ")}</small>` : "";
+        container.innerHTML = `<div class="message-box">לא נמצאו שירים תקינים ברשימה.${errorDetails}</div>`;
         return;
     }
 
-    if (!songs.has(songName)) {
-        let errorDetails = "";
-        if (errors.length > 0) {
-            errorDetails = `<br><small style="opacity:0.7">אזהרות ברשימה: ${errors.join(", ")}</small>`;
-        }
-        container.innerHTML = `<div class="message-box">שיר זה אינו קיים במערכת או שהשם שגוי.${errorDetails}</div>`;
-        return;
-    }
+    // בחירת שיר אקראי מתוך המערך
+    const randomIndex = Math.floor(Math.random() * songs.length);
+    const song = songs[randomIndex];
 
-    const song = songs.get(songName);
     let previewUrl = `https://drive.google.com/file/d/${song.fileId}/preview`;
     if (song.resourceKey) {
         previewUrl += `?resourcekey=${song.resourceKey}`;
