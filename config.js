@@ -1,6 +1,6 @@
 window.GAME_CONFIG = {
     gameTitle: "the freestyle game",
-    subtitle: "סרקו את קוד ה־QR והקשיבו לשיר בנגן",
+    subtitle: "הקשיבו לשיר ותתחילו לאלתר :)",
     promptText: "הקשיבו היטב לשיר בנגן ולחצו על Play:",
     fallbackBgColor: "#1a1a2e",
     textColor: "#ffffff",
